@@ -1,6 +1,7 @@
 import unittest
 
-import urlFeeds
+from urlFeeds import *
+from article import *
 
 def fun(x):
     return x + 1
@@ -8,12 +9,9 @@ def fun(x):
   
 
 class MyTest(unittest.TestCase):
- 
-    def testSuccess(self):
-        self.assertEqual(fun(3), 4)
 
-    def testProcessUrlLists(self):
-        rssExample = """someResult = {
+    def setUp(self):
+        self.rssExample = """someResult = {
     'feedEntries': [{
     url: "www.arkera.ai/article/1",
     title: "Article 1, The Story of Arkera’s Beginnings",
@@ -24,8 +22,18 @@ class MyTest(unittest.TestCase):
     imageUrl: "www.arkera.ai/article/image/2"
     }]
 }"""   
+ 
+    def testSuccess(self):
+        self.assertEqual(fun(3), 4)
 
-        urls = urlFeeds.extractUrlsFromRss(rssExample)
+    def testCreateArticles(self):
+        a1 = Article(title='article one', html= 'div')
+        self.assertEqual(a1.title, 'article one')
+        self.assertEqual(a1.html, 'div')
+
+
+    def testProcessUrlLists(self):
+        urls = extractUrlsFromRss(self.rssExample)
         self.assertEqual(len(urls), 2)
 
 
