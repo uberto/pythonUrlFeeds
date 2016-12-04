@@ -1,2 +1,6 @@
+from article import *
+
+
 def extractUrlsFromRss(rssJson):
-    return ["1", "2"]
+    return [Article(title='title1', html='site'), 
+            Article(title='title2', html='site2')]

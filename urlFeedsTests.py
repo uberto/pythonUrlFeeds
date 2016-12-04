@@ -33,9 +33,11 @@ class MyTest(unittest.TestCase):
 
 
     def testProcessUrlLists(self):
-        urls = extractUrlsFromRss(self.rssExample)
-        self.assertEqual(len(urls), 2)
-
+        arts = extractUrlsFromRss(self.rssExample)
+        self.assertEqual(len(arts), 2)
+        self.assertEqual(arts[0].title, 'Article 1, The Story of Arkera’s Beginnings')
+        self.assertEqual(arts[1].html, 'www.arkera.ai/article/2')
+ 
 
 
 if __name__ == '__main__':
