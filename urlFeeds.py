@@ -1,6 +1,9 @@
 from article import *
+import json
 
+def extractUrlsFromJsonRss(rssJson):
+    items = json.loads(rssJson)['feedEntries']
 
-def extractUrlsFromRss(rssJson):
-    return [Article(title='title1', html='site'), 
-            Article(title='title2', html='site2')]
+    #print(items)
+
+    return [Article(title=i['title'], html=i['url']) for i in items]
