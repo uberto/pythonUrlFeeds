@@ -2,6 +2,7 @@ import unittest
 
 from urlFeeds import *
 from article import *
+from persistence import *
 
 def fun(x):
     return x + 1
@@ -39,6 +40,17 @@ class MyTest(unittest.TestCase):
         self.assertEqual(arts[1].url, 'www.arkera.ai/article/2')
         self.assertFalse(arts[1].isFetched())
  
+
+    def testPersistArticles(self):
+        a1 = Article(title='article one', url= 'http://', html="")
+        
+        db = Persistence()
+        db.saveArticle(a1)
+
+        newa1 = db.findArticle('article one')
+
+        self.assertEqual(newa1.title, 'article one')
+        self.assertEqual(newa1.url, 'http://')
 
 
 if __name__ == '__main__':
