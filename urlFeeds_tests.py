@@ -27,16 +27,17 @@ class MyTest(unittest.TestCase):
         self.assertEqual(fun(3), 4)
 
     def testCreateArticles(self):
-        a1 = Article(title='article one', html= 'div')
+        a1 = Article(title='article one', url= 'div', html="")
         self.assertEqual(a1.title, 'article one')
-        self.assertEqual(a1.html, 'div')
+        self.assertEqual(a1.url, 'div')
 
 
     def testProcessUrlLists(self):
         arts = extractUrlsFromJsonRss(self.rssExample)
         self.assertEqual(len(arts), 2)
         self.assertEqual(arts[0].title, 'Article 1, The Story of Arkera’s Beginnings')
-        self.assertEqual(arts[1].html, 'www.arkera.ai/article/2')
+        self.assertEqual(arts[1].url, 'www.arkera.ai/article/2')
+        self.assertFalse(arts[1].isFetched())
  
 
 

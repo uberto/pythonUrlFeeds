@@ -6,4 +6,4 @@ def extractUrlsFromJsonRss(rssJson):
 
     #print(items)
 
-    return [Article(title=i['title'], html=i['url']) for i in items]
+    return [Article(title=i['title'], url=i['url'], html="") for i in items]

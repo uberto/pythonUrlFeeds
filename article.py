@@ -1,7 +1,7 @@
 from collections import namedtuple
 
-class Article(namedtuple('Article', 'title html')):
+class Article(namedtuple('Article', 'title html url')):
 
-    def isValid(self):
-        return True
+    def isFetched(self):
+        return self.html
 
