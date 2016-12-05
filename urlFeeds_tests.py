@@ -17,7 +17,7 @@ class MyTest(unittest.TestCase):
     def setUp(self):
         self.rssExample = """{
     "feedEntries": [{
-    "url": "www.arkera.ai/article/1",
+    "url": "http://wikipedia.org",
     "title": "Article 1, The Story of Arkera’s Beginnings",
     "imageUrl": "www.arkera.ai/article/image/1"
     }, {
@@ -49,6 +49,7 @@ class MyTest(unittest.TestCase):
         self.assertFalse(arts[1].isFetched())
  
 
+
     def testPersistArticles(self):
         a1 = Article(title='article one', url= 'http://', html="")
         
@@ -58,6 +59,12 @@ class MyTest(unittest.TestCase):
 
         self.assertEqual(newa1.title, 'article one')
         self.assertEqual(newa1.url, 'http://')
+
+    def testFetchFromUrl(self):
+        arts = extractUrlsFromJsonRss(self.rssExample)
+        a1 = arts[0].fetchArticleFromUrl()
+        print("fetched %d bytes" % len(a1.html))
+        self.assertTrue(a1.isFetched())
 
 
 if __name__ == '__main__':

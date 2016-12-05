@@ -1,4 +1,4 @@
-import http
+from urllib.request import urlopen
 from collections import namedtuple
 
 class Article(namedtuple('Article', 'title html url')):
@@ -6,10 +6,11 @@ class Article(namedtuple('Article', 'title html url')):
     def isFetched(self):
         return self.html
 
-    def fetchFromUrl(self):
-        conn = http.client.HTTPSConnection(self.url)
-        conn.request("GET", "/")
-        r1 = conn.getresponse()
-        assert r1.status == 200, "wrong status: " + str(r1.status)
-        self.html = r1.read()
+    def fetchArticleFromUrl(self):
+
+        r = urlopen(self.url)
+        assert r.status == 200, "Error fetching url " + self.url + " " + str(r.status)
+        htmlBody = r.read().decode("utf-8")
+        return Article(title=self.title, url=self.url, html=htmlBody)
+        
 
