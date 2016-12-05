@@ -1,8 +1,10 @@
 import unittest
+import os
 
 from urlFeeds import *
 from article import *
 from persistence import *
+
 
 def fun(x):
     return x + 1
@@ -10,6 +12,7 @@ def fun(x):
   
 
 class MyTest(unittest.TestCase):
+
 
     def setUp(self):
         self.rssExample = """{
@@ -22,8 +25,13 @@ class MyTest(unittest.TestCase):
     "title": "Article 2, The Story of Arkera’s Beginnings 2",
     "imageUrl": "www.arkera.ai/article/image/2"
     }]
-}"""   
- 
+}"""
+        self.db = Persistence()
+
+
+    def tearDown(self):
+        self.db.dropTables()
+    
     def testSuccess(self):
         self.assertEqual(fun(3), 4)
 
@@ -44,10 +52,9 @@ class MyTest(unittest.TestCase):
     def testPersistArticles(self):
         a1 = Article(title='article one', url= 'http://', html="")
         
-        db = Persistence()
-        db.saveArticle(a1)
+        self.db.saveArticle(a1)
 
-        newa1 = db.findArticle('article one')
+        newa1 = self.db.findArticle('article one')
 
         self.assertEqual(newa1.title, 'article one')
         self.assertEqual(newa1.url, 'http://')
