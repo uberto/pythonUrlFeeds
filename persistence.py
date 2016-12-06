@@ -1,11 +1,11 @@
 from tinydb import TinyDB, Query
 from article import *
 
-ARTICLES_DB = 'articleDb.json'
+
 class Persistence:
 
-    def __init__(self):
-        self.articleDb = TinyDB(ARTICLES_DB)
+    def __init__(self, fileName):
+        self.articleDb = TinyDB(fileName)
         
     def saveArticle(self, article):
         self.articleDb.insert(article._asdict())

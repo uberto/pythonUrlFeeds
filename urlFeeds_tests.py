@@ -1,9 +1,11 @@
 import unittest
 import os
+import string
 
 from urlFeeds import *
 from article import *
 from persistence import *
+from workers import *
 
 
 def fun(x):
@@ -26,7 +28,7 @@ class MyTest(unittest.TestCase):
     "imageUrl": "www.arkera.ai/article/image/2"
     }]
 }"""
-        self.db = Persistence()
+        self.db = Persistence('testDb.json')
 
 
     def tearDown(self):
@@ -36,9 +38,16 @@ class MyTest(unittest.TestCase):
         self.assertEqual(fun(3), 4)
 
     def testCreateArticles(self):
-        a1 = Article(title='article one', url= 'div', html="")
+        a1 = Article(title='article one', url= 'div', html="", tags=[])
         self.assertEqual(a1.title, 'article one')
         self.assertEqual(a1.url, 'div')
+
+    def testTagArticle(self):
+        a1 = Article(title='article one', url= 'div', html="", tags=[])
+        tagged = a1.tagArticle('t1', 't2')
+        self.assertEqual(len(tagged.tags), 2)
+        self.assertEqual(tagged.tags[0], 't1')
+        self.assertEqual(tagged.tags[1], 't2')
 
 
     def testProcessUrlLists(self):
@@ -47,11 +56,10 @@ class MyTest(unittest.TestCase):
         self.assertEqual(arts[0].title, 'Article 1, The Story of Arkera’s Beginnings')
         self.assertEqual(arts[1].url, 'www.arkera.ai/article/2')
         self.assertFalse(arts[1].isFetched())
- 
 
 
     def testPersistArticles(self):
-        a1 = Article(title='article one', url= 'http://', html="")
+        a1 = Article(title='article one', url= 'http://', html="", tags=[])
         
         self.db.saveArticle(a1)
 
@@ -65,6 +73,14 @@ class MyTest(unittest.TestCase):
         a1 = arts[0].fetchArticleFromUrl()
         print("fetched %d bytes" % len(a1.html))
         self.assertTrue(a1.isFetched())
+
+
+    def testFetchFromQueue(self):
+        l = []
+        for a in list(string.ascii_uppercase):
+            l.append(Article(title=a, url='http://en.wikipedia.org/wiki/' + a, html='', tags=[]))
+        processAndSaveAll(self.db, l)
+
 
 
 if __name__ == '__main__':
