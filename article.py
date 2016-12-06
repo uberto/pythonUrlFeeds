@@ -1,18 +1,13 @@
-from urllib.request import urlopen
 from collections import namedtuple
+from httpFetcher import *
 
 class Article(namedtuple('Article', 'title html url tags')):
-
-
 
     def isFetched(self):
         return self.html
 
     def fetchArticleFromUrl(self):
-
-        r = urlopen(self.url)
-        assert r.status == 200, "Error fetching url " + self.url + " " + str(r.status)
-        htmlBody = r.read().decode("utf-8")
+        htmlBody =downloadFromUrl(self.url)
         return Article(title=self.title, url=self.url, html=htmlBody, tags=[])
 
 
